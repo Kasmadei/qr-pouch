@@ -1,15 +1,23 @@
-import { ReduxState, ReduxAction, SET_QR_CODE } from '../types';
+import { ReduxState, ReduxAction, ADD_BUSINESS } from '../types';
 
 const initState: ReduxState = {
-    acceptedQrCodes: {}
+    activeBusinesses: [{
+        name: "test18",
+        uuid: "test",
+        voucher: {
+            numberOfExpectedScans: 18,
+            numberOfScans: 2
+        }
+    }]
 }
 
 export default function mainReducer(state: ReduxState = initState, action: ReduxAction): ReduxState {
     switch (action.type) {
-        case SET_QR_CODE: {
-            const tempQr = action.payload
-            const newState = { acceptedQrCodes: { ...state.acceptedQrCodes, ...tempQr } }
-            return newState
+        case ADD_BUSINESS: {
+            return {
+                ...state,
+                activeBusinesses: [...state.activeBusinesses, action.payload]
+            }
         }
         default:
             return state

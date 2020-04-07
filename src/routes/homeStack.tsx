@@ -1,11 +1,13 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack'
 import { NavigationStackProp } from 'react-navigation-stack';
-import { HOME, DETAILS,ADD_BUSINESS } from '../types'
+import { HOME, DETAILS, QR_READER, CREATE_BUSINESS } from '../types'
 import Home from '../screens/Home'
-import Details from '../screens/Details'
-import AddBusiness from '../screens/AddBusiness'
+import Details from '../screens/Details/Details'
+import AddBusiness from '../screens/CreateBusiness'
 import Header from '../shared/header'
+import QrReader from '../screens/QrReader';
+import CreateBusiness from '../screens/CreateBusiness';
 
 
 const screens = {
@@ -23,10 +25,16 @@ const screens = {
             title: "Details"
         }
     },
-    [`${ADD_BUSINESS}`]: {
-        screen: AddBusiness,
+    [`${QR_READER}`]: {
+        screen: QrReader,
         navigationOptions: {
-            title: "Add Business"
+            title: ""
+        }
+    },
+    [`${CREATE_BUSINESS}`]: {
+        screen: CreateBusiness,
+        navigationOptions: {
+            title: "Create business"
         }
     }
 }
