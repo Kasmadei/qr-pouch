@@ -4,10 +4,10 @@ import { NavigationStackProp } from 'react-navigation-stack';
 import { HOME, DETAILS, QR_READER, CREATE_BUSINESS } from '../types'
 import Home from '../screens/Home'
 import Details from '../screens/Details/Details'
-import AddBusiness from '../screens/CreateBusiness'
+import AddBusiness from '../screens/createBusiness/CreateBusiness'
 import Header from '../shared/header'
 import QrReader from '../screens/QrReader';
-import CreateBusiness from '../screens/CreateBusiness';
+import CreateBusiness from '../screens/createBusiness/CreateBusiness';
 
 
 const screens = {
@@ -43,7 +43,7 @@ const HomeStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
         headerTintColor: '#444',
         headerStyle: {
-            backgroundColor: "#57A0D3"
+            backgroundColor: "#678fcc"
         }
     }
 });

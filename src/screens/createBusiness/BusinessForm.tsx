@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { NavigationStackProp } from "react-navigation-stack";
 import * as yup from "yup";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
-import { globalStyles } from "../../globalStyles";
+import { globalStyles } from "../../../globalStyles";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { QR_READER } from "../types";
 import { useDispatch } from "react-redux";
-import { addBusiness } from "../services/actions";
+import { addBusiness } from "../../services/actions";
 
 const businessSchema = yup.object({
   name: yup.string().required().min(4),
@@ -21,31 +20,24 @@ const businessSchema = yup.object({
 
 const initValues = { name: "", numberOfExpectedScans: "" };
 
-const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({ navigation }) => {
-  const [scannedStr, setScannedStr] = useState<string | undefined>(undefined);
+const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onSubmit = async (values: any, actions: any) => {
-    if (scannedStr !== undefined) {
-      const newBusiness = {
-        uuid: scannedStr,
-        name: values.name,
-        voucher: {
+    const newBusiness = {
+      uuid: `${values.name}-${values.name}-${values.numberOfExpectedScans}`,
+      name: values.name,
+      voucher: {
+        numberOfScans: 0,
+        metadata: {
           numberOfExpectedScans: values.numberOfExpectedScans,
-          numberOfScans: 0,
         },
-      };
-      actions.resetForm();
-      setScannedStr(undefined);
-      navigation.goBack();
-      await dispatch(addBusiness(newBusiness));
-    } else {
-      Alert.alert("Oops!", "You need to scan qr code");
-    }
-  };
+      },
+    };
 
-  const onScan = (str: string) => {
-    setScannedStr(str);
+    await dispatch(addBusiness(newBusiness));
+    navigation.goBack();
+    actions.resetForm();
   };
 
   return (
@@ -56,40 +48,18 @@ const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({ navigatio
           const { name, numberOfExpectedScans } = props.values;
 
           const isDisabled = () => {
-            if (name.length > 0 && numberOfExpectedScans.length > 0 && scannedStr !== undefined) return true
-            return false
+            return (name.length > 0 && numberOfExpectedScans.length > 0)
           };
 
           const toggle = isDisabled();
 
-          const createButton = toggle ? (
+          const addButton = toggle ? (
             <TouchableOpacity onPress={() => handleSubmit()}>
               <Text style={styles.buttonText}>create</Text>
             </TouchableOpacity>
           ) : (
             <Text style={styles.buttonDisabled}>create</Text>
           );
-
-          const scanButton = scannedStr === undefined ? (
-              <>
-                <Text style={styles.title}>
-                  you need to scan qr code
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate(QR_READER, { onScan })}>
-                  <Text style={styles.buttonText}>scan</Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text style={styles.titleSuccess}>Success</Text>
-                <Text style={styles.title}>qr code has been scanned</Text>
-                <TouchableOpacity onPress={() => navigation.navigate(QR_READER, { onScan })}>
-                  <Text style={{ ...styles.buttonText, backgroundColor: "#d3d3d3" }}>
-                    scan again
-                  </Text>
-                </TouchableOpacity>
-              </>
-            );
 
           return (
             <View>
@@ -115,8 +85,7 @@ const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({ navigatio
                 {props.touched.numberOfExpectedScans &&
                   props.errors.numberOfExpectedScans}
               </Text>
-              {scanButton}
-              {createButton}
+              {addButton}
             </View>
           );
         }}
@@ -164,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 10,
-  }
+  },
 });
 
 export default BusinessForm;

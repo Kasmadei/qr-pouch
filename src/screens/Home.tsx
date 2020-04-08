@@ -23,9 +23,9 @@ const Home: React.FC<{ navigation: NavigationStackProp }> = ({ navigation }) => 
         <FlatList
           data={activeBusinesses}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => { navigation.navigate(DETAILS, { business: item }); }} key={Math.random().toString()}>
+            <TouchableOpacity onPress={() => { navigation.navigate(DETAILS, { businessUuid: item.uuid }); }} key={Math.random().toString()}>
               <Card>
-                <Text style={globalStyles.titleText}>{item.name}</Text>
+                <Text style={globalStyles.titleText}>{`${item.name} - (${item.voucher.numberOfScans}/${item.voucher.metadata.numberOfExpectedScans})`}</Text>
               </Card>
             </TouchableOpacity>
           )}

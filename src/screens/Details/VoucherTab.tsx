@@ -1,14 +1,15 @@
 import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import { VoucherConfig } from "../../types";
 import { globalStyles } from "../../../globalStyles";
+import { VoucherState } from "../../types";
 
 const defaultColor = "#fafafa";
-const highlightedColor = "#d2f8d2";
-const focusedColor = "#ffffa3";
+const highlightedColor = "#e0fae0";
+const focusedColor = "#FFFACD";
 
-const VoucherTab: React.FC<{ config: VoucherConfig }> = ({ config }) => {
-  const { numberOfExpectedScans, numberOfScans } = config;
+const VoucherTab: React.FC<{ voucherState: VoucherState }> = ({ voucherState }) => {
+  const { numberOfScans, metadata } = voucherState;
+  const { numberOfExpectedScans } = metadata
 
   const data = [];
 
@@ -22,7 +23,12 @@ const VoucherTab: React.FC<{ config: VoucherConfig }> = ({ config }) => {
         <FlatList
           numColumns={3}
           data={data}
-          renderItem={({ item }) => ( <View style={styles.card} key={Math.random().toString()} /> )}
+          renderItem={({ item }) => {
+            const bgColor = numberOfScans > item.id ? highlightedColor : numberOfScans === item.id ? focusedColor : defaultColor  
+            return  ( 
+              <View style={{ ...styles.card, backgroundColor: bgColor }} key={Math.random().toString()} /> 
+              )
+          }}
           keyExtractor={(item, index) => `${index.toString()}-${Math.random().toString}`}
         />
       </View>
@@ -41,5 +47,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#A0A0A0",
   },
+  cardScaned: {
+    backgroundColor: "blue"
+  },
+  cardFocus: {
+    backgroundColor: "yellow",
+    borderColor: "red"
+  }
 });
 export default VoucherTab;
