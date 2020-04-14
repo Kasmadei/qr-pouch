@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-const Header: React.FC<{ title: string, navigation: any }> = ({ title, navigation }) => {
+const Header: React.FC<{ title: string, navigation?: any, menu?: boolean }> = ({ title, navigation, menu }) => {
     const openMenu = () => {
         navigation.openDrawer()  
     }
 
     return (
         <View style={styles.header}>
-            <MaterialIcons name="menu" onPress={openMenu} style={styles.icon} />
+            {menu && <MaterialIcons name="menu" color="white" onPress={openMenu} style={styles.icon} /> }
             <View>
                 <Text style={styles.headerText}>{ title }</Text>
             </View>
@@ -24,9 +24,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     headerText: {
-        fontWeight: 'bold',
-        fontSize: 16,
-        color: '#333',
+        fontSize: 20,
+        color: 'white',
         letterSpacing: 1
     },
     icon: {

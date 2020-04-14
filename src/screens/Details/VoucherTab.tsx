@@ -14,14 +14,15 @@ const VoucherTab: React.FC<{ voucherState: VoucherState }> = ({ voucherState }) 
   const data = [];
 
   for (let i = 0; i < numberOfExpectedScans; i++) {
-    data.push({ id: i });
+    data.push({ id: i, });
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={styles.tabContainer}>
       <View style={styles.listContainer}>
         <FlatList
-          numColumns={3}
+          showsVerticalScrollIndicator={false}
+          numColumns={4}
           data={data}
           renderItem={({ item }) => {
             const bgColor = numberOfScans > item.id ? highlightedColor : numberOfScans === item.id ? focusedColor : defaultColor  
@@ -37,13 +38,18 @@ const VoucherTab: React.FC<{ voucherState: VoucherState }> = ({ voucherState }) 
 };
 
 const styles = StyleSheet.create({
+  tabContainer: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 10
+  },
   listContainer: {
     backgroundColor: "white",
-    height: 420,
+    height: 301,
   },
   card: {
-    height: 140,
-    width: "33.333%",
+    height: 100,
+    width: "25%",
     borderWidth: 1,
     borderColor: "#A0A0A0",
   },

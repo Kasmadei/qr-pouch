@@ -6,23 +6,22 @@ import AboutAndFeedback from '../screens/AboutAndFeedback';
 import { ABOUT } from '../types'
 
 const screens = {
-    [`${ABOUT}`]: {
+    [ABOUT]: {
         screen: AboutAndFeedback,
         navigationOptions: ({ navigation }: { navigation: NavigationStackProp }) => {
             return {
-                headerTitle: () => <Header title='About' navigation={navigation} />,
+                headerTitle: () => <Header title='About' navigation={navigation} menu />,
             }
         }
     }
 }
 
-const AboutAndFeedbackStack = createStackNavigator(screens, {
+const AboutStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
-        headerTintColor: '#444',
         headerStyle: {
-            backgroundColor: "#bebebe"
+            backgroundColor: "#678fcc"
         }
     }
 });
 
-export default AboutAndFeedbackStack;
+export default AboutStack;

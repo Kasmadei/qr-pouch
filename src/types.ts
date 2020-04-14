@@ -24,8 +24,10 @@ export interface VoucherMetadata {
 }
 
 // actions
-export const ADD_BUSINESS = "ADD_BUSINESS" 
+// export const ADD_BUSINESS = "ADD_BUSINESS" 
 export const UPDATE_VOUCHER = "UPDATE_VOUCHER"
+export const SET_BUSINESSES = "SET_BUSINESSES"
+export const CREATE_NEW_BUSINESS = "CREATE_NEW_BUSINESS"
 
 // routes
 export const HOME = "HOME"

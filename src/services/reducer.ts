@@ -1,21 +1,13 @@
-import { ReduxState, ReduxAction, ADD_BUSINESS, UPDATE_VOUCHER, Business } from '../types';
+import { SET_BUSINESSES } from './../types';
+import { ReduxState, ReduxAction, CREATE_NEW_BUSINESS, UPDATE_VOUCHER, Business } from '../types';
 
 const initState: ReduxState = {
-    activeBusinesses: [{
-        name: "test",
-        uuid: "test-test-12",
-        voucher: {
-            numberOfScans: 3,
-            metadata: {
-                numberOfExpectedScans: 12
-            }
-        }
-    }]
+    activeBusinesses: []
 }
 
 export default function mainReducer(state: ReduxState = initState, action: ReduxAction): ReduxState {
     switch (action.type) {
-        case ADD_BUSINESS: {
+        case CREATE_NEW_BUSINESS: {
             return {
                 ...state,
                 activeBusinesses: [...state.activeBusinesses, action.payload]
@@ -41,6 +33,12 @@ export default function mainReducer(state: ReduxState = initState, action: Redux
             return {
                 ...state,
                 activeBusinesses: updatedActiveBusinesses
+            }
+        }
+        case SET_BUSINESSES: {
+            return {
+                ...state,
+                activeBusinesses: action.payload
             }
         }
         default:

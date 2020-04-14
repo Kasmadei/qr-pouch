@@ -2,44 +2,52 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 import VoucherTab from "./VoucherTab";
-import { Business, QR_READER, ReduxState } from "../../types";
-import { globalStyles } from "../../../globalStyles";
+import { QR_READER, ReduxState } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { updateVoucher } from "../../services/actions";
 
 const Details: React.FC<{ navigation: NavigationStackProp }> = ({ navigation }) => {
   const dispatch = useDispatch();
   const businessUuid = navigation.getParam("businessUuid");
+
   const business = useSelector((state: ReduxState) => {
-    const allBusiness = state.activeBusinesses
-    return allBusiness.find(b => b.uuid === businessUuid)
-  })
+    const allBusiness = state.activeBusinesses;
+    return allBusiness.find((b) => b.uuid === businessUuid);
+  });
 
   const onScan = async (str: string) => {
-    if(str === businessUuid) {
+    if (str === businessUuid) {
       await dispatch(updateVoucher(str));
+      Alert.alert("Yeah!", "Qr code was successfully scaned.");
     } else {
-      Alert.alert('Oops!', 'Wrong QR-code. Try again.')
+      Alert.alert("Oops!", "Wrong QR-code. Try again.");
     }
   };
+
   if (business !== undefined) {
     return (
       <View style={styles.container}>
-      <View style={styles.title}>
-        <Text style={styles.titleText}>{business.name}</Text>
+        <View style={styles.title}>
+          <TouchableOpacity onPress={() => Alert.alert("business id:", businessUuid)}>
+            <Text style={styles.titleText}>{business.name}</Text>
+          </TouchableOpacity>
+        </View>
+        <VoucherTab voucherState={business.voucher} />
+        <View style={{ }}>
+          <TouchableOpacity onPress={() => navigation.navigate(QR_READER, { onScan })} style={styles.button}>
+            <Text style={styles.buttonText}>Scan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => alert('reset')} style={styles.button}>
+            <Text style={styles.buttonText}>Reset</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => alert('delete')} style={styles.button}>
+            <Text style={styles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <VoucherTab voucherState={business.voucher} />
-      <View style={{ height: 100 }}>
-      <TouchableOpacity onPress={() => navigation.navigate(QR_READER, { onScan }) } style={styles.button}>
-        <Text style={styles.buttonText}>Scan</Text>
-      </TouchableOpacity>
-      </View>
-    </View>
     );
   }
-  return (
-    <></>
-  )
+  return <></>;
 };
 
 const styles = StyleSheet.create({
@@ -70,7 +78,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-  }
+    color: "grey"
+  },
 });
 
 export default Details;

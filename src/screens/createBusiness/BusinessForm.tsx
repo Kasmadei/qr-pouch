@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { NavigationStackProp } from "react-navigation-stack";
 import * as yup from "yup";
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { globalStyles } from "../../../globalStyles";
 import { Formik } from "formik";
-import { TextInput } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
-import { addBusiness } from "../../services/actions";
+import { createBusiness } from "../../services/actions";
+import { Business } from "../../types";
+import uuid from 'uuid-random';
 
 const businessSchema = yup.object({
   name: yup.string().required().min(4),
@@ -24,24 +25,28 @@ const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({navigation
   const dispatch = useDispatch();
 
   const onSubmit = async (values: any, actions: any) => {
-    const newBusiness = {
-      uuid: `${values.name}-${values.name}-${values.numberOfExpectedScans}`,
+    const id = uuid().substring(0, 8)
+    const newBusiness: Business = {
+      uuid: id,
       name: values.name,
       voucher: {
         numberOfScans: 0,
         metadata: {
-          numberOfExpectedScans: values.numberOfExpectedScans,
+          numberOfExpectedScans: parseInt(values.numberOfExpectedScans),
         },
       },
     };
 
-    await dispatch(addBusiness(newBusiness));
-    navigation.goBack();
     actions.resetForm();
+    await dispatch(createBusiness(newBusiness));
+    Alert.alert('Yeah!', 'New business successfully created.', [{ text: 'Ok', onPress: () => {
+      navigation.goBack();
+    }}]);
   };
 
   return (
     <View style={globalStyles.container}>
+      
       <Formik initialValues={initValues} validationSchema={businessSchema} onSubmit={onSubmit}>
         {(props) => {
           const { handleSubmit, handleChange, handleBlur } = props;
@@ -62,31 +67,33 @@ const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({navigation
           );
 
           return (
-            <View>
-              <TextInput
-                style={globalStyles.input}
-                placeholder="Name"
-                onChangeText={handleChange("name")}
-                value={name}
-                onBlur={handleBlur("name")}
-              />
-              <Text style={globalStyles.errorText}>
-                {props.touched.name && props.errors.name}
-              </Text>
-              <TextInput
-                style={globalStyles.input}
-                placeholder="Number of expectedScans"
-                keyboardType="numeric"
-                onChangeText={handleChange("numberOfExpectedScans")}
-                value={numberOfExpectedScans}
-                onBlur={handleBlur("numberOfExpectedScans")}
-              />
-              <Text style={globalStyles.errorText}>
-                {props.touched.numberOfExpectedScans &&
-                  props.errors.numberOfExpectedScans}
-              </Text>
-              {addButton}
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View>
+                <TextInput
+                  style={globalStyles.input}
+                  placeholder="Name"
+                  onChangeText={handleChange("name")}
+                  value={name}
+                  onBlur={handleBlur("name")}
+                />
+                <Text style={globalStyles.errorText}>
+                  {props.touched.name && props.errors.name}
+                </Text>
+                <TextInput
+                  style={globalStyles.input}
+                  placeholder="Number of expectedScans"
+                  keyboardType="numeric"
+                  onChangeText={handleChange("numberOfExpectedScans")}
+                  value={numberOfExpectedScans}
+                  onBlur={handleBlur("numberOfExpectedScans")}
+                />
+                <Text style={globalStyles.errorText}>
+                  {props.touched.numberOfExpectedScans &&
+                    props.errors.numberOfExpectedScans}
+                </Text>
+                {addButton}
+              </View>
+            </TouchableWithoutFeedback>
           );
         }}
       </Formik>
