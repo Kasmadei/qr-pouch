@@ -1,4 +1,4 @@
-import { SET_BUSINESSES } from './../types';
+import { SET_BUSINESSES, RESET_VOUCHER, DELETE_BUSINESS, DELETE_ALL_BUSINESSES } from './../types';
 import { ReduxState, ReduxAction, CREATE_NEW_BUSINESS, UPDATE_VOUCHER, Business } from '../types';
 
 const initState: ReduxState = {
@@ -10,7 +10,7 @@ export default function mainReducer(state: ReduxState = initState, action: Redux
         case CREATE_NEW_BUSINESS: {
             return {
                 ...state,
-                activeBusinesses: [...state.activeBusinesses, action.payload]
+                activeBusinesses: action.payload
             }
         }
         case UPDATE_VOUCHER: {
@@ -36,6 +36,24 @@ export default function mainReducer(state: ReduxState = initState, action: Redux
             }
         }
         case SET_BUSINESSES: {
+            return {
+                ...state,
+                activeBusinesses: action.payload
+            }
+        }
+        case RESET_VOUCHER: {
+            return {
+                ...state,
+                activeBusinesses: action.payload
+            }
+        }
+        case DELETE_BUSINESS: {
+            return {
+                ...state,
+                activeBusinesses: action.payload
+            }
+        }
+        case DELETE_ALL_BUSINESSES: {
             return {
                 ...state,
                 activeBusinesses: action.payload

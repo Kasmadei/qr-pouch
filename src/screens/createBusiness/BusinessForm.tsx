@@ -25,7 +25,7 @@ const BusinessForm: React.FC<{ navigation: NavigationStackProp }> = ({navigation
   const dispatch = useDispatch();
 
   const onSubmit = async (values: any, actions: any) => {
-    const id = uuid().substring(0, 8)
+    const id = uuid().substring(0, 3)
     const newBusiness: Business = {
       uuid: id,
       name: values.name,

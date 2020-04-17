@@ -1,17 +1,6 @@
 import { Business } from "../types";
 
-let businesses: Business[] = [
-    {
-        uuid: "1",
-        name: "test1",
-        voucher: {
-            numberOfScans: 1,
-            metadata: {
-                numberOfExpectedScans: 11
-            }
-        }
-    },
-]
+let businesses: Business[] = []
 
 export const createBusiness = (business: Business) => {
     businesses.unshift(business)
@@ -33,6 +22,11 @@ export const resetBusiness = (id: string) => {
     if(business !== undefined) {
         business.voucher.numberOfScans = 0;
     }
+    return businesses
+}
+
+export const deleteAllBusinesses = () => {
+    businesses = []
     return businesses
 }
 
